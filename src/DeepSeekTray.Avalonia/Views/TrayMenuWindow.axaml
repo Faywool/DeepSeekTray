@@ -1,0 +1,36 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="DeepSeekTray.Views.TrayMenuWindow"
+        Width="312"
+        SizeToContent="Height"
+        SystemDecorations="None"
+        CanResize="False"
+        ShowInTaskbar="False"
+        Topmost="True"
+        ShowActivated="True"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent">
+
+    <Border Margin="14"
+            Background="{DynamicResource Surface}"
+            BorderBrush="{DynamicResource Line}"
+            BorderThickness="1"
+            CornerRadius="12"
+            Padding="6"
+            BoxShadow="0 10 28 0 #44000000">
+
+        <StackPanel>
+            <StackPanel Margin="10,8,10,8" Spacing="2">
+                <TextBlock x:Name="TitleText" FontSize="12.5" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextMain}" />
+                <TextBlock x:Name="SubtitleText" FontSize="10.5"
+                           Foreground="{DynamicResource TextFaint}"
+                           TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+
+            <Border Height="1" Margin="6,2,6,4" Background="{DynamicResource Line}" />
+
+            <StackPanel x:Name="ItemsHost" Spacing="1" />
+        </StackPanel>
+    </Border>
+</Window>

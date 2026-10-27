@@ -1,0 +1,294 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="using:DeepSeekTray.Localization"
+        x:Class="DeepSeekTray.Views.SettingsWindow"
+        Title="{loc:Tr Settings.Title}"
+        Width="880" Height="680"
+        MinWidth="820" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AppBg}">
+
+    <Grid ColumnDefinitions="212,*">
+
+        <!-- 左侧导航 -->
+        <Border Background="{DynamicResource Surface}"
+                BorderBrush="{DynamicResource Line}"
+                BorderThickness="0,0,1,0">
+            <StackPanel Margin="14,18,14,14">
+                <StackPanel Orientation="Horizontal" Spacing="9" Margin="6,0,0,0">
+                    <Image Source="avares://DeepSeekTray/Assets/app-icon.png" Width="26" Height="26" />
+                    <StackPanel VerticalAlignment="Center" Spacing="1">
+                        <TextBlock Text="DeepSeek" FontSize="12.5" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource TextMain}" />
+                        <TextBlock x:Name="VersionText" FontSize="10"
+                                   Foreground="{DynamicResource TextFaint}" />
+                    </StackPanel>
+                </StackPanel>
+
+                <ListBox x:Name="Nav" Classes="nav" Margin="0,20,0,0"
+                         SelectedIndex="0" SelectionChanged="Nav_SelectionChanged">
+                    <ListBoxItem Content="{loc:Tr Nav.Accounts}" />
+                    <ListBoxItem Content="{loc:Tr Nav.Refresh}" />
+                    <ListBoxItem Content="{loc:Tr Nav.Appearance}" />
+                    <ListBoxItem Content="{loc:Tr Nav.About}" />
+                </ListBox>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Column="1" RowDefinitions="*,Auto">
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+                <Grid Margin="22,20,18,0">
+
+                    <!-- 账号与 Key -->
+                    <StackPanel x:Name="SectionAccount" Spacing="12">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="{loc:Tr Accounts.Title}" Classes="h1" />
+                            <TextBlock Classes="hint" Text="{loc:Tr Accounts.Hint}" />
+                        </StackPanel>
+
+                        <Grid ColumnDefinitions="1.05*,14,0.95*">
+                            <StackPanel Grid.Column="0" Spacing="5">
+                                <TextBlock Text="{loc:Tr Accounts.Accounts}" Classes="label" />
+                                <ListBox x:Name="AccountList" Classes="plain" Height="168"
+                                         SelectionChanged="AccountList_SelectionChanged">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="9" Margin="0,3">
+                                                <Ellipse Width="8" Height="8" Fill="{Binding Dot}"
+                                                         VerticalAlignment="Center" />
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Title}" FontSize="12.5"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource TextMain}" />
+                                                    <TextBlock Text="{Binding Subtitle}" FontSize="10.5"
+                                                               Foreground="{DynamicResource TextFaint}" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Button Content="{loc:Tr Accounts.Add}" Classes="primary" Click="AddAccount_Click" />
+                                    <Button Content="{loc:Tr Common.Rename}" Classes="ghost" Click="RenameAccount_Click" />
+                                    <Button Content="{loc:Tr Accounts.SetDefault}" Classes="ghost" Click="SetDefaultAccount_Click" />
+                                    <Button Content="{loc:Tr Common.Delete}" Classes="ghost" Click="DeleteAccount_Click" />
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" Spacing="5">
+                                <TextBlock Text="{loc:Tr Accounts.Keys}" Classes="label" />
+                                <ListBox x:Name="KeyList" Classes="plain" Height="168">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="9" Margin="0,3">
+                                                <Ellipse Width="8" Height="8" Fill="{Binding Dot}"
+                                                         VerticalAlignment="Center" />
+                                                <StackPanel>
+                                                    <TextBlock Text="{Binding Title}" FontSize="12.5"
+                                                               FontWeight="SemiBold"
+                                                               Foreground="{DynamicResource TextMain}" />
+                                                    <TextBlock Text="{Binding Subtitle}" FontSize="10.5"
+                                                               Foreground="{DynamicResource TextFaint}"
+                                                               TextTrimming="CharacterEllipsis" MaxWidth="280" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Button Content="{loc:Tr Accounts.AddKey}" Classes="primary" Click="AddKey_Click" />
+                                    <Button Content="{loc:Tr Accounts.SetActive}" Classes="ghost" Click="SetActiveKey_Click" />
+                                    <Button Content="{loc:Tr Common.Test}" Classes="ghost" Click="TestKey_Click" />
+                                    <Button Content="{loc:Tr Common.Delete}" Classes="ghost" Click="DeleteKey_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+
+                        <Border Classes="card">
+                            <TextBlock Classes="hint" Text="{loc:Tr Accounts.Note}" />
+                        </Border>
+                    </StackPanel>
+
+                    <!-- 刷新与预警 -->
+                    <StackPanel x:Name="SectionRefresh" Spacing="12" IsVisible="False">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="{loc:Tr Refresh.Title}" Classes="h1" />
+                            <TextBlock Classes="hint" Text="{loc:Tr Refresh.Hint}" />
+                        </StackPanel>
+
+                        <Border Classes="card">
+                            <StackPanel Spacing="14">
+                                <Grid ColumnDefinitions="110,*" RowDefinitions="Auto,Auto">
+                                    <TextBlock Text="{loc:Tr Refresh.Interval}" Classes="label" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                                        <TextBox x:Name="IntervalBox" Width="88" Text="5" />
+                                        <TextBlock Text="{loc:Tr Refresh.Minutes}" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextMuted}" />
+                                        <TextBlock Text="{loc:Tr Refresh.Range}" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextFaint}" FontSize="11.5" />
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Row="1" Text="{loc:Tr Refresh.Alert}" Classes="label"
+                                               VerticalAlignment="Center" Margin="0,14,0,0" />
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Spacing="6"
+                                                VerticalAlignment="Center" Margin="0,14,0,0">
+                                        <TextBlock Text="{loc:Tr Refresh.Below}" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextMuted}" />
+                                        <TextBlock Text="¥" VerticalAlignment="Center" Foreground="{DynamicResource TextMuted}" />
+                                        <TextBox x:Name="AlertBox" Width="88" Text="20" />
+                                        <TextBlock Text="{loc:Tr Refresh.WhenLow}" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextMuted}" />
+                                    </StackPanel>
+                                </Grid>
+
+                                <Border Height="1" Background="{DynamicResource Line}" />
+
+                                <StackPanel Spacing="12">
+                                    <CheckBox x:Name="WarnCheck" Content="{loc:Tr Refresh.Warn}" IsChecked="True" />
+                                    <CheckBox x:Name="AutostartCheck" Content="{loc:Tr Refresh.Autostart}" />
+                                    <CheckBox x:Name="PopupCheck" Content="{loc:Tr Refresh.Popup}" IsChecked="True" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- 外观 -->
+                    <StackPanel x:Name="SectionAppearance" Spacing="12" IsVisible="False">
+                        <StackPanel Spacing="6">
+                            <TextBlock Text="{loc:Tr Appearance.Title}" Classes="h1" />
+                            <TextBlock Classes="hint" Text="{loc:Tr Appearance.Hint}" />
+                        </StackPanel>
+
+                        <Border Classes="card">
+                            <StackPanel Spacing="14">
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="{loc:Tr Appearance.Theme}" Classes="h2" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="ThemeSystemButton" Content="{loc:Tr Appearance.System}"
+                                                Classes="pill" Click="Theme_Click" Tag="system" />
+                                        <Button x:Name="ThemeLightButton" Content="{loc:Tr Appearance.Light}"
+                                                Classes="pill" Click="Theme_Click" Tag="light" />
+                                        <Button x:Name="ThemeDarkButton" Content="{loc:Tr Appearance.Dark}"
+                                                Classes="pill" Click="Theme_Click" Tag="dark" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <Border Height="1" Background="{DynamicResource Line}" />
+
+                                <StackPanel Spacing="8">
+                                    <TextBlock Text="{loc:Tr Appearance.Language}" Classes="h2" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="LangSystemButton" Content="{loc:Tr Appearance.System}"
+                                                Classes="pill" Click="Language_Click" Tag="system" />
+                                        <Button x:Name="LangZhButton" Content="{loc:Tr Appearance.LangZh}"
+                                                Classes="pill" Click="Language_Click" Tag="zh" />
+                                        <Button x:Name="LangEnButton" Content="{loc:Tr Appearance.LangEn}"
+                                                Classes="pill" Click="Language_Click" Tag="en" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Classes="card">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="{loc:Tr Appearance.Tiers}" Classes="h2" />
+                                <TextBlock Classes="hint" Text="{loc:Tr Appearance.TiersHint}" />
+
+                                <Grid ColumnDefinitions="64,*,Auto,Auto" RowDefinitions="Auto,Auto,Auto"
+                                      HorizontalAlignment="Left">
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{loc:Tr Appearance.Green}"
+                                               Classes="label" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Spacing="6" Margin="0,3">
+                                        <TextBlock Text="{loc:Tr Appearance.AtLeast}" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextMuted}" />
+                                        <TextBox x:Name="GreenFromBox" Width="88" Text="100" />
+                                    </StackPanel>
+                                    <Button Grid.Row="0" Grid.Column="2" x:Name="GreenSwatch" Width="82" Height="28"
+                                            Margin="12,3,0,3" Classes="swatch" Click="GreenColor_Click" />
+                                    <TextBlock Grid.Row="0" Grid.Column="3" Text="{loc:Tr Appearance.Good}" Classes="label"
+                                               VerticalAlignment="Center" Margin="12,0,0,0" />
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{loc:Tr Appearance.Yellow}"
+                                               Classes="label" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Spacing="6" Margin="0,3">
+                                        <TextBlock Text="{loc:Tr Appearance.AtLeast}" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextMuted}" />
+                                        <TextBox x:Name="YellowFromBox" Width="88" Text="20" />
+                                    </StackPanel>
+                                    <Button Grid.Row="1" Grid.Column="2" x:Name="YellowSwatch" Width="82" Height="28"
+                                            Margin="12,3,0,3" Classes="swatch" Click="YellowColor_Click" />
+                                    <TextBlock Grid.Row="1" Grid.Column="3" Text="{loc:Tr Appearance.Watch}" Classes="label"
+                                               VerticalAlignment="Center" Margin="12,0,0,0" />
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{loc:Tr Appearance.Red}"
+                                               Classes="label" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{loc:Tr Appearance.BelowYellow}"
+                                               VerticalAlignment="Center" Margin="0,8,0,4"
+                                               Foreground="{DynamicResource TextMuted}" />
+                                    <Button Grid.Row="2" Grid.Column="2" x:Name="RedSwatch" Width="82" Height="28"
+                                            Margin="12,8,0,4" Classes="swatch" Click="RedColor_Click" />
+                                    <TextBlock Grid.Row="2" Grid.Column="3" Text="{loc:Tr Appearance.Low}" Classes="label"
+                                               VerticalAlignment="Center" Margin="12,8,0,4" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- 关于 -->
+                    <StackPanel x:Name="SectionAbout" Spacing="12" IsVisible="False">
+                        <TextBlock Text="{loc:Tr AboutSection.Title}" Classes="h1" />
+
+                        <Border Classes="card">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="{loc:Tr AboutSection.Source}" Classes="h2" />
+                                <TextBlock Classes="hint" Text="{loc:Tr AboutSection.SourceText}" />
+                            </StackPanel>
+                        </Border>
+
+                        <Border Classes="card">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="{loc:Tr AboutSection.Limits}" Classes="h2" />
+                                <StackPanel Spacing="7">
+                                    <Grid ColumnDefinitions="18,*">
+                                        <TextBlock Text="✓" Classes="ok" FontSize="12" />
+                                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12"
+                                                   Text="{loc:Tr AboutSection.Limit1}" />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="18,*">
+                                        <TextBlock Text="✓" Classes="ok" FontSize="12" />
+                                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12"
+                                                   Text="{loc:Tr AboutSection.Limit2}" />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="18,*">
+                                        <TextBlock Text="✗" Classes="bad" FontSize="12" />
+                                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12"
+                                                   Text="{loc:Tr AboutSection.Limit3}" />
+                                    </Grid>
+                                    <Grid ColumnDefinitions="18,*">
+                                        <TextBlock Text="≈" Classes="warn" FontSize="12" />
+                                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12"
+                                                   Text="{loc:Tr AboutSection.Limit4}" />
+                                    </Grid>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <Button Content="{loc:Tr AboutSection.OpenConsole}" Classes="ghost" Click="Console_Click" />
+                                    <Button Content="{loc:Tr AboutSection.OpenAbout}" Classes="ghost" Click="About_Click" />
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                </Grid>
+            </ScrollViewer>
+
+            <Border Grid.Row="1" BorderBrush="{DynamicResource Line}" BorderThickness="0,1,0,0"
+                    Background="{DynamicResource Surface}" Padding="22,12">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                    <Button Content="{loc:Tr Common.Cancel}" Width="94" Classes="ghost" Click="Cancel_Click" />
+                    <Button Content="{loc:Tr Common.Save}" Width="104" Classes="primary" Click="Save_Click" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,107 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="using:DeepSeekTray.Localization"
+        x:Class="DeepSeekTray.Views.AboutWindow"
+        Title="{loc:Tr About.WindowTitle}"
+        Width="520"
+        SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource AppBg}">
+
+    <StackPanel Margin="24,22,24,20" Spacing="14">
+
+        <StackPanel Orientation="Horizontal" Spacing="14">
+            <Image Source="avares://DeepSeekTray/Assets/app-icon.png" Width="54" Height="54" />
+            <StackPanel VerticalAlignment="Center" Spacing="8">
+                <TextBlock Text="{loc:Tr About.Product}" Classes="h1" />
+                <StackPanel Orientation="Horizontal" Spacing="7">
+                    <Border Classes="chip" Padding="8,3">
+                        <TextBlock x:Name="VersionText" FontSize="10.5"
+                                   Foreground="{DynamicResource TextMuted}" />
+                    </Border>
+                    <Border Classes="chip" Padding="8,3">
+                        <TextBlock Text="Avalonia 12 · .NET 10" FontSize="10.5"
+                                   Foreground="{DynamicResource TextMuted}" />
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+
+        <Border Classes="card">
+            <StackPanel Spacing="10">
+                <TextBlock Text="{loc:Tr About.Done}" Classes="h2" />
+                <StackPanel Spacing="7">
+                    <Grid ColumnDefinitions="18,*">
+                        <TextBlock Text="✓" Classes="ok" FontSize="12" />
+                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12" Text="{loc:Tr About.Done1}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="18,*">
+                        <TextBlock Text="✓" Classes="ok" FontSize="12" />
+                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12" Text="{loc:Tr About.Done2}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="18,*">
+                        <TextBlock Text="✓" Classes="ok" FontSize="12" />
+                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12" Text="{loc:Tr About.Done3}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="18,*">
+                        <TextBlock Text="✓" Classes="ok" FontSize="12" />
+                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12" Text="{loc:Tr About.Done4}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="18,*">
+                        <TextBlock Text="✓" Classes="ok" FontSize="12" />
+                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12" Text="{loc:Tr About.Done5}" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Classes="card">
+            <StackPanel Spacing="10">
+                <TextBlock Text="{loc:Tr About.NotDone}" Classes="h2" />
+                <StackPanel Spacing="7">
+                    <Grid ColumnDefinitions="18,*">
+                        <TextBlock Text="✗" Classes="bad" FontSize="12" />
+                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12" Text="{loc:Tr About.Not1}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="18,*">
+                        <TextBlock Text="✗" Classes="bad" FontSize="12" />
+                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12" Text="{loc:Tr About.Not2}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="18,*">
+                        <TextBlock Text="✗" Classes="bad" FontSize="12" />
+                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12" Text="{loc:Tr About.Not3}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="18,*">
+                        <TextBlock Text="≈" Classes="warn" FontSize="12" />
+                        <TextBlock Grid.Column="1" Classes="hint" FontSize="12" Text="{loc:Tr About.Not4}" />
+                    </Grid>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Classes="card">
+            <StackPanel Spacing="8">
+                <TextBlock Text="{loc:Tr About.Disclaimer}" Classes="h2" />
+                <TextBlock Classes="hint" FontSize="11.5" TextWrapping="Wrap" LineHeight="19"
+                           Text="{loc:Tr About.D1}" />
+                <TextBlock Classes="hint" FontSize="11.5" TextWrapping="Wrap" LineHeight="19"
+                           Text="{loc:Tr About.D2}" />
+                <TextBlock Classes="hint" FontSize="11.5" TextWrapping="Wrap" LineHeight="19"
+                           Text="{loc:Tr About.D3}" />
+                <TextBlock Classes="hint" FontSize="11.5" TextWrapping="Wrap" LineHeight="19"
+                           Text="{loc:Tr About.D4}" />
+                <TextBlock Classes="hint" FontSize="11.5" TextWrapping="Wrap" LineHeight="19"
+                           Text="{loc:Tr About.D5}" />
+            </StackPanel>
+        </Border>
+
+        <Grid ColumnDefinitions="Auto,*,Auto">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Button Content="{loc:Tr AboutSection.OpenConsole}" Classes="ghost" Click="Console_Click" />
+                <Button Content="{loc:Tr About.OpenFolder}" Classes="ghost" Click="Folder_Click" />
+            </StackPanel>
+            <Button Grid.Column="2" Content="{loc:Tr Common.Close}" Width="92" Classes="primary" Click="Close_Click" />
+        </Grid>
+    </StackPanel>
+</Window>

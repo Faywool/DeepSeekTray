@@ -1,0 +1,46 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="using:DeepSeekTray.Localization"
+        x:Class="DeepSeekTray.Views.InfoPopupWindow"
+        Width="352"
+        SizeToContent="Height"
+        SystemDecorations="None"
+        CanResize="False"
+        ShowInTaskbar="False"
+        ShowActivated="False"
+        Topmost="True"
+        Focusable="False"
+        Background="Transparent"
+        TransparencyLevelHint="Transparent"
+        FontFamily="Consolas, Cascadia Mono, Microsoft YaHei UI">
+
+    <Border Margin="12"
+            Background="{DynamicResource Surface}"
+            BorderBrush="{DynamicResource Line}"
+            BorderThickness="1"
+            CornerRadius="14"
+            Padding="20,17,20,18"
+            BoxShadow="0 12 32 0 #4D000000">
+
+        <StackPanel Width="284">
+
+            <!-- 标题行 -->
+            <Grid ColumnDefinitions="*,Auto">
+                <TextBlock VerticalAlignment="Center"
+                           Text="{loc:Tr Popup.Header}" FontSize="11.5" FontWeight="SemiBold"
+                           LetterSpacing="0.3"
+                           Foreground="{DynamicResource TextFaint}" />
+                <TextBlock Grid.Column="1" x:Name="HeaderMeta" VerticalAlignment="Center"
+                           FontSize="10.5" Foreground="{DynamicResource TextFaint}" />
+            </Grid>
+
+            <Border Height="1" Margin="0,12,0,0" Background="{DynamicResource Line}" />
+
+            <!-- 账号列表 -->
+            <StackPanel x:Name="RowsHost" Spacing="16" Margin="0,14,0,0" />
+
+            <!-- 多账号时才有合计 -->
+            <StackPanel x:Name="FooterHost" Spacing="8" Margin="0,14,0,0" />
+        </StackPanel>
+    </Border>
+</Window>

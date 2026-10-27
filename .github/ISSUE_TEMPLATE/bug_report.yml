@@ -1,0 +1,74 @@
+name: Bug 报告
+description: 报告一个可复现的问题
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。提交前请先搜索已有 issue。
+
+        > **请勿粘贴完整的 API Key**，任何地方只保留 `sk-***` 前缀即可。
+
+  - type: input
+    id: version
+    attributes:
+      label: 版本
+      description: 设置窗口左下角显示的版本号，或 exe 文件属性里的版本
+      placeholder: v2.1.0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: edition
+    attributes:
+      label: 构建类型
+      options:
+        - 框架依赖（需要 .NET 10 运行时）
+        - 自包含（免安装运行时）
+        - 自己编译
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Windows 版本
+      placeholder: Windows 11 24H2 (26100)
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 托盘右键 → 设置
+        2. 添加账号并粘贴 Key
+        3. ……
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为 / 实际行为
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: 把 `%APPDATA%\DeepSeekTray\app.log` 末尾几十行贴进来（异常带堆栈）
+      render: text
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 确认
+      options:
+        - label: 我已经搜索过 issue，确认不是重复问题
+          required: true
+        - label: 我确认日志与截图里不含完整 API Key
+          required: true

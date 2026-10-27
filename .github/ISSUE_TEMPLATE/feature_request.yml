@@ -1,0 +1,41 @@
+name: 功能建议
+description: 建议一个新功能或体验改进
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先确认这个功能不在官方 API 的能力边界之外。
+
+        当前 `/user/balance` 只返回 `is_available` 与 `total` / `granted` / `topped_up` 三个金额，
+        **没有**登录、没有 Key 管理、没有历史账单，因此这些方向的请求通常无法实现。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你想解决什么问题
+      placeholder: 现在……，导致……
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 你希望的方案
+      placeholder: 在设置里增加……
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 你考虑过的替代方案
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 确认
+      options:
+        - label: 我已经搜索过 issue 和文档，确认不是已有功能或已知限制
+          required: true

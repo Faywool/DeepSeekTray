@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Resolve version
+        id: ver
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          "version=$version" >> $env:GITHUB_OUTPUT
+          Write-Host "Release version: $version"
+
+      - name: Publish (framework-dependent)
+        shell: pwsh
+        run: |
+          dotnet publish src/DeepSeekTray.Avalonia/DeepSeekTray.Avalonia.csproj `
+            -c Release -r win-x64 --no-self-contained `
+            -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true `
+            -p:DebugType=None -p:DebugSymbols=false `
+            -p:Version=${{ steps.ver.outputs.version }} `
+            -o out/fd
+
+      # 裁剪后的自包含版本偶尔会因第三方库的裁剪警告失败；
+      # 失败不影响框架依赖版本发布，产物会自动跳过。
+      - name: Publish (self-contained, trimmed)
+        id: sc
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          dotnet publish src/DeepSeekTray.Avalonia/DeepSeekTray.Avalonia.csproj `
+            -c Release -r win-x64 --self-contained true `
+            -p:PublishSingleFile=true -p:PublishTrimmed=true -p:EnableCompressionInSingleFile=true `
+            -p:DebugType=None -p:DebugSymbols=false `
+            -p:Version=${{ steps.ver.outputs.version }} `
+            -o out/sc
+
+      - name: Self-test published binary
+        shell: pwsh
+        run: |
+          $exe = "out/fd/DeepSeekTray.exe"
+          if (-not (Test-Path $exe)) { throw "Publish output not found: $exe" }
+
+          $process = Start-Process -FilePath $exe -ArgumentList '--selftest' -Wait -PassThru
+          Get-Content "$env:TEMP/deepseek-tray-selftest.log" -ErrorAction SilentlyContinue
+
+          if ($process.ExitCode -ne 0) {
+            throw "Self-test failed with exit code $($process.ExitCode)"
+          }
+
+      - name: Package
+        shell: pwsh
+        run: |
+          $version = "${{ steps.ver.outputs.version }}"
+
+          Copy-Item LICENSE, THIRD-PARTY-NOTICES.md, README.md -Destination out/fd/
+          Compress-Archive -Path out/fd/* -DestinationPath "DeepSeekTray-$version-win-x64-framework-dependent.zip"
+
+          if (Test-Path out/sc/DeepSeekTray.exe) {
+            Copy-Item LICENSE, THIRD-PARTY-NOTICES.md, README.md -Destination out/sc/
+            Compress-Archive -Path out/sc/* -DestinationPath "DeepSeekTray-$version-win-x64-self-contained.zip"
+          } else {
+            Write-Warning "Self-contained build unavailable, skipping that asset."
+          }
+
+          Get-ChildItem *.zip | Select-Object Name, Length
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: DeepSeekTray-*.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
