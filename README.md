@@ -6,6 +6,7 @@
 [![Release](https://img.shields.io/github/v/release/Faywool/DeepSeekTray?sort=semver)](https://github.com/Faywool/DeepSeekTray/releases/latest)
 [![License](https://img.shields.io/github/license/Faywool/DeepSeekTray)](LICENSE)
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-0078D6)
+
 > **非官方工具**，与 DeepSeek 官方没有任何关联，也未获其授权或背书。
 > Unofficial tool. Not affiliated with, authorised by, or endorsed by DeepSeek.
 
