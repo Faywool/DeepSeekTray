@@ -1,9 +1,11 @@
-name: Release
+﻿name: Release
 
 on:
   push:
     tags:
       - 'v*'
+  # 允许在 Actions 页面手动触发（账单/配额恢复后可一键重跑，无需重打 tag）
+  workflow_dispatch:
 
 permissions:
   contents: write
