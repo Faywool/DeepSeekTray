@@ -115,6 +115,25 @@ dotnet publish src\DeepSeekTray.Avalonia -c Release -r win-x64 --self-contained 
 
 ---
 
+## 发布（Release）
+
+**Releases 与公开仓库的 Actions 都是免费的**，不需要绑定支付方式。
+
+| 方式 | 做法 |
+|---|---|
+| 自动（推荐） | 打 tag 并推送：`git tag -a v2.1.0 -m "..."` → `git push origin v2.1.0`，`release.yml` 会构建两种产物、跑自检、创建 Release 并上传 zip |
+| 手动 | [Releases](https://github.com/Faywool/DeepSeekTray/releases) → Draft a new release → 选 tag → 上传 `artifacts/release/*.zip` |
+| 脚本（Actions 不可用时） | 见下 |
+
+```powershell
+# 需要 PAT：Settings → Developer settings → Personal access tokens
+# Fine-grained token，权限 Contents: Read and write
+$env:GH_TOKEN = "github_pat_xxx"
+.\scripts\release.ps1 -Version 2.1.0
+```
+
+脚本会本地构建两种产物（框架依赖 / 自包含裁剪），读取 `CHANGELOG.md` 对应版本段落作为 Release 正文，
+创建（或复用）Release 并上传附件；同名附件会先删除再上传。加 `-Draft` 可先建草稿。
 ## 数据与配置
 
 | 内容 | 位置 |
